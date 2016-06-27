@@ -3,6 +3,10 @@
 
 'use strict';
 
+// Define demo data
+var readerIDs=['CR1_Tokyo','CR2_Osaka'];
+var cardIDs=['ABCD1234','ABCD5678'];
+
 var Protocol = require('azure-iot-device-amqp').Amqp;
 // Uncomment one of these transports and then change it in fromConnectionString to test other transports
 // var Protocol = require('azure-iot-device-amqp-ws').AmqpWs;
@@ -13,8 +17,7 @@ var Message = require('azure-iot-device').Message;
 
 // String containing Hostname, Device Id & Device Key in the following formats:
 //  "HostName=<iothub_host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"
-var connectionString = 'DeviceId=TestCR1;HostName=OHA-IOTHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=cCYc0nEdStf6+VkdvLlB1iddQ1d8iDGJD621kdC1SuQ=
-';
+var connectionString = 'HostName=OHA-IOTHub.azure-devices.net;DeviceId=TestCR1;SharedAccessKey=Ifq8RSzKerAK934m4ZQlNj58YCoOuz+JJIVuynGezp4=';
 
 // fromConnectionString must specify a transport constructor, coming from any transport package.
 var client = Client.fromConnectionString(connectionString, Protocol);
@@ -33,8 +36,13 @@ var connectCallback = function (err) {
 
     // Create a message and send it to the IoT Hub every second
     var sendInterval = setInterval(function () {
-      var windSpeed = 10 + (Math.random() * 4); // range: [10, 14]
-      var data = JSON.stringify({ deviceId: 'TestCR1', windSpeed: windSpeed });
+
+      var readerID = readerIDs[Math.floor(Math.random()* readerIDs.length)];
+      var cardID = cardIDs[Math.floor(Math.random()* cardIDs.length)];
+      var currentTime = new Date();
+      var timestr = currentTime.getHours()+':'+currentTime.getMinutes()+':'+currentTime.getSeconds();
+      
+      var data = JSON.stringify({ deviceId: readerID, cardID: cardID, timeRec: timestr});
       var message = new Message(data);
       message.properties.add('myproperty', 'myvalue');
       console.log('Sending message: ' + message.getData());

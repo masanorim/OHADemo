@@ -1,0 +1,86 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Device Sample",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/DeviceSample/simple_sample_device.js",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development",
+				"DEBUG": "*"
+			},
+			"externalConsole": false,
+			"sourceMaps": false,
+			"outDir": null
+		},{
+			"name": "Device client tests",
+			"type": "node",
+			"request": "launch",
+			"program": "node/device/core/node_modules/mocha/bin/_mocha",
+			"stopOnEntry": false,
+			"args": ["node/device/core/lib/_client_test.js"],
+			"cwd": ".",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"externalConsole": false,
+			"sourceMaps": false,
+			"outDir": null
+		},{
+			"name": "Device client integration tests",
+			"type": "node",
+			"request": "launch",
+			"program": "node/device/transport/amqp/node_modules/mocha/bin/_mocha",
+			"stopOnEntry": false,
+			"args": ["node/device/transport/amqp/lib/_client_test_integration.js"],
+			"cwd": ".",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+                "IOTHUB_CONNECTION_STRING": "<CONNECTION_STRING>",
+                "IOTHUB_DEVICE_ID": "<DEVICE_ID>",
+                "IOTHUB_DEVICE_KEY": "<DEVICE_KEY>",
+                "IOTHUB_EVENTHUB_CONNECTION_STRING": "<EVENTHUB_CONNECTION_STRING>",
+                "IOTHUB_EVENTHUB_CONSUMER_GROUP": "<EVENTHUB_CONSUMER_GROUP>",
+                "IOTHUB_EVENTHUB_LISTEN_NAME": "<EVENTHUB_LISTEN_NAME>",
+                "IOTHUB_PARTITION_COUNT": "<PARTITION_COUNT>",
+                "IOTHUB_SHARED_ACCESS_SIGNATURE": "<SHARED_ACCESS_SIGNATURE>"
+			},
+			"externalConsole": false,
+			"sourceMaps": false,
+			"outDir": null
+		},{
+			"name": "iothub-explorer",
+			"type": "node",
+			"request": "launch",
+			"program": "tools/iothub-explorer/iothub-explorer.js",
+			"stopOnEntry": false,
+			"args": ["<ConnectionString>", "<Command>"],
+			"cwd": ".",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"externalConsole": false,
+			"sourceMaps": false,
+			"outDir": null
+		}
+	]
+}
