@@ -57,7 +57,6 @@ var connectCallback = function (err) {
       var cardID = cardIDs[Math.floor(Math.random()* cardIDs.length)];
       var currentTime = new Date();
       var timestr = currentTime.toISOString();
-      //currentTime.getHours()+':'+currentTime.getMinutes()+':'+currentTime.getSeconds();
       
       var data = JSON.stringify({ deviceId: readerID, cardID: cardID, timeRec: timestr});
       var message = new Message(data);

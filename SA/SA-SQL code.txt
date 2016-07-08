@@ -1,0 +1,14 @@
+SELECT
+    System.Timestamp as FlaudTime,
+    ES1.cardId as FaludCard,
+    ES1.deviceId as UsedAt1,
+    ES2.deviceId as UsedAt2
+INTO
+    "OHA-EH"
+FROM
+    "OHA-IOTHUB" ES1 TIMESTAMP BY timeRec
+    JOIN
+    "OHA-IOTHUB" ES2 TIMESTAMP BY timeRec
+    ON ES1.cardID = ES2.cardID
+    AND DATEDIFF(ss, ES1, ES2 ) BETWEEN 0 AND 5
+    WHERE ES1.deviceId != ES2.deviceId
