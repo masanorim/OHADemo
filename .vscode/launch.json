@@ -7,7 +7,7 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/DeviceSample/simple_sample_device.js",
 			"stopOnEntry": false,
-			"args": [],
+			"args": ["1"],
 			"cwd": "${workspaceRoot}",
 			"runtimeExecutable": null,
 			"runtimeArgs": [

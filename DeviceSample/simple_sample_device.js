@@ -5,7 +5,26 @@
 
 // Define demo data
 var readerIDs=['CR1_Tokyo','CR2_Osaka'];
-var cardIDs=['ABCD1234','ABCD5678'];
+
+// String containing Hostname, Device Id & Device Key in the following formats:
+//  "HostName=<iothub_host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"
+var connectionStrings =[
+  'HostName=OHA-IOTHub.azure-devices.net;DeviceId=TestCR1;SharedAccessKey=Ifq8RSzKerAK934m4ZQlNj58YCoOuz+JJIVuynGezp4=',
+  'HostName=OHA-IOTHub.azure-devices.net;DeviceId=TestCR2;SharedAccessKey=LBklykcLnfubXr1T0Hxi+pYjX7gfFfaN8Q6t8l6oXfE='];
+
+var cardIDs=[
+  'ABCD0001','ABCD0002','ABCD0003','ABCD0004','ABCD0005',
+  'ABCD0006','ABCD0007','ABCD0008','ABCD0009','ABCD0010'];
+
+// Reader Index for this session
+var readerIdx = 0;   // this param is device idx
+if( process.argv.length>=3 ){
+  readerIdx = process.argv[2]
+}
+if(readerIdx < 0 || readerIdx >= readerIDs.length){
+  readerIdx = 0;
+}
+
 
 var Protocol = require('azure-iot-device-amqp').Amqp;
 // Uncomment one of these transports and then change it in fromConnectionString to test other transports
@@ -15,11 +34,8 @@ var Protocol = require('azure-iot-device-amqp').Amqp;
 var Client = require('azure-iot-device').Client;
 var Message = require('azure-iot-device').Message;
 
-// String containing Hostname, Device Id & Device Key in the following formats:
-//  "HostName=<iothub_host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"
-var connectionString = 'HostName=OHA-IOTHub.azure-devices.net;DeviceId=TestCR1;SharedAccessKey=Ifq8RSzKerAK934m4ZQlNj58YCoOuz+JJIVuynGezp4=';
-
 // fromConnectionString must specify a transport constructor, coming from any transport package.
+var connectionString = connectionStrings[readerIdx];
 var client = Client.fromConnectionString(connectionString, Protocol);
 
 var connectCallback = function (err) {
@@ -37,10 +53,11 @@ var connectCallback = function (err) {
     // Create a message and send it to the IoT Hub every second
     var sendInterval = setInterval(function () {
 
-      var readerID = readerIDs[Math.floor(Math.random()* readerIDs.length)];
+      var readerID = readerIDs[readerIdx];
       var cardID = cardIDs[Math.floor(Math.random()* cardIDs.length)];
       var currentTime = new Date();
-      var timestr = currentTime.getHours()+':'+currentTime.getMinutes()+':'+currentTime.getSeconds();
+      var timestr = currentTime.toISOString();
+      //currentTime.getHours()+':'+currentTime.getMinutes()+':'+currentTime.getSeconds();
       
       var data = JSON.stringify({ deviceId: readerID, cardID: cardID, timeRec: timestr});
       var message = new Message(data);
